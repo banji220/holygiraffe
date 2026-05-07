@@ -8,10 +8,9 @@ export const SITE = {
   tagline: 'Sparkling Windows Every Time — Orange County, CA',
   description:
     'Professional residential and commercial window cleaning, screen cleaning and repair, hard water stain removal, solar panel cleaning, gutter cleaning, and pressure washing across Orange County, CA. 5-star rated, fully insured, eco-friendly purified-water system.',
-  // Logo: SVG is the global brand mark used across navbar, footer, hero, favicon.
-  // Drop a high-resolution PNG at /logo.png too (used in schema for image fields).
-  logo: '/logo.svg',
-  logoPng: '/logo.png',
+  // Global brand mark — your real PNG, used across navbar, footer, hero,
+  // favicon, schema. Drop your file at public/logo.png to replace.
+  logo: '/logo.png',
   ogImage: '/og-image.png',
   ogImageWidth: 1200,
   ogImageHeight: 630,
