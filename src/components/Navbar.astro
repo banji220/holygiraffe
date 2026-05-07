@@ -24,9 +24,18 @@ const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name));
   aria-label="Main navigation"
 >
   <div class="container mx-auto flex items-center justify-between py-4 px-6">
-    {/* Brand */}
+    {/* Brand — logo SVG is white-on-transparent; CSS invert flips it to
+        black so it's readable on the cream nav background. */}
     <a href="/" class="font-heading font-bold text-2xl flex items-center gap-2" aria-label={`${SITE.name} home`}>
-      <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg border-[3px] border-foreground bg-foreground text-primary font-black">G</span>
+      <img
+        src="/logo.svg"
+        alt=""
+        width="40"
+        height="58"
+        class="h-10 w-auto invert"
+        aria-hidden="true"
+        fetchpriority="high"
+      />
       <span>Giraffe</span><span class="text-primary">Cleaning</span>
     </a>
 

@@ -30,7 +30,8 @@ const cityName = (slug: string) =>
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
       <div>
         <div class="font-heading font-bold text-2xl mb-3 flex items-center gap-2">
-          <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-background text-foreground font-black">G</span>
+          {/* Footer is dark bg — logo SVG is white, displays directly */}
+          <img src="/logo.svg" alt="" width="40" height="58" class="h-10 w-auto" aria-hidden="true" loading="lazy" />
           Giraffe<span class="text-primary">Cleaning</span>
         </div>
         <p class="text-background/60 text-sm max-w-xs">

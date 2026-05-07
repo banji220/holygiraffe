@@ -1,14 +1,18 @@
 ---
-// PLACEHOLDER — full port of GallerySection.tsx (9.8KB, 3 marquee rows of
-// before/after images) pending next session. Rendering simple image-grid
-// placeholders so the section appears in the homepage flow.
+// PLACEHOLDER — full port of the Lovable GallerySection (3-marquee
+// before/after image strip) is on the next-session backlog. For now
+// we render plain placeholder cards so the section appears in the page
+// flow without firing 404s for missing images.
 //
-// Drop real images at /public/images/gallery/{1..12}.jpg and they'll show up.
+// To swap in real photos: drop files at /public/images/gallery/{1..8}.{webp,jpg}
+// and replace the placeholder boxes below with <img> tags.
+
+const placeholders = Array.from({ length: 8 }, (_, i) => i + 1);
 ---
 
 <section class="py-12 sm:py-16 md:py-20 bg-mint/30 relative overflow-hidden" aria-label="Recent work gallery">
-  <div class="container mx-auto px-6">
-    <div class="text-center mb-14">
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12 sm:mb-14">
       <div class="neo-badge bg-coral text-coral-foreground mb-4 mx-auto">📸 Recent Work</div>
       <h2 class="text-4xl md:text-6xl font-heading font-bold">
         Before &amp; After Across <span class="text-primary">Orange County</span>
@@ -18,18 +22,14 @@
       </p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
-      {Array.from({ length: 8 }).map((_, i) => (
+      {placeholders.map((n) => (
         <div
-          class="aspect-square neo-card bg-muted overflow-hidden"
-          aria-label={`Gallery placeholder ${i + 1}`}
+          class="aspect-square neo-card bg-muted/40 flex items-center justify-center"
+          aria-label={`Gallery placeholder ${n}`}
         >
-          <img
-            src={`/images/gallery/${i + 1}.jpg`}
-            alt="Giraffe Cleaning before/after"
-            loading="lazy"
-            class="w-full h-full object-cover"
-            onerror="this.style.display='none';this.parentElement.classList.add('flex','items-center','justify-center');this.parentElement.insertAdjacentHTML('beforeend','<span class=\'text-muted-foreground text-xs\'>Photo coming</span>');"
-          />
+          <span class="text-muted-foreground text-xs font-heading font-semibold uppercase tracking-wider">
+            Photo coming
+          </span>
         </div>
       ))}
     </div>

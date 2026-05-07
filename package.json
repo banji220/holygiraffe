@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Giraffe Window Cleaning - Orange County, CA. Static Astro site, faithful port of the Lovable design with proper SEO. Zero JS shipped except the QuoteForm island.",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "astro dev --host",
+    "start": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

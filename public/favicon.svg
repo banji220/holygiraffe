@@ -1,4 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#1f2937"/>
-  <text x="32" y="46" font-family="Space Grotesk,system-ui,sans-serif" font-size="42" font-weight="800" text-anchor="middle" fill="#f48c25">G</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Giraffe Cleaning">
+  <title>Giraffe Cleaning</title>
+  <!-- Simplified for legibility at 16x16. Solid black tile with white
+       giraffe-G silhouette so the logo reads even at favicon scale. -->
+  <rect width="64" height="64" rx="10" fill="#1a1a1a"/>
+
+  <!-- Two horns -->
+  <path d="M 23 10 C 19 10 17 13 17 17 C 17 22 18 27 20 30 L 26 30 C 27 27 27 22 27 17 C 27 13 26 10 23 10 Z" fill="white"/>
+  <path d="M 41 10 C 45 10 47 13 47 17 C 47 22 46 27 44 30 L 38 30 C 37 27 37 22 37 17 C 37 13 38 10 41 10 Z" fill="white"/>
+
+  <!-- The G — chunky, fits the tile -->
+  <path fill="white" d="M 32 22
+                       C 19 22  13 32  13 42
+                       C 13 52  20 58  30 58
+                       C 38 58  43 56  47 53
+                       L 47 42
+                       L 33 42
+                       L 33 47
+                       L 41 47
+                       L 41 50
+                       C 38 51  34 52  30 52
+                       C 24 52  21 47  21 42
+                       C 21 36  24 30  32 30
+                       C 36 30  39 31  42 33
+                       L 47 30
+                       C 44 25  39 22  32 22 Z"/>
+
+  <!-- Tiny eyes — visible only at 32px+; gracefully invisible at 16px -->
+  <circle cx="29" cy="19" r="1.2" fill="white"/>
+  <circle cx="35" cy="19" r="1.2" fill="white"/>
 </svg>
