@@ -1,0 +1,37 @@
+---
+// PLACEHOLDER — full port of GallerySection.tsx (9.8KB, 3 marquee rows of
+// before/after images) pending next session. Rendering simple image-grid
+// placeholders so the section appears in the homepage flow.
+//
+// Drop real images at /public/images/gallery/{1..12}.jpg and they'll show up.
+---
+
+<section class="py-12 sm:py-16 md:py-20 bg-mint/30 relative overflow-hidden" aria-label="Recent work gallery">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-14">
+      <div class="neo-badge bg-coral text-coral-foreground mb-4 mx-auto">📸 Recent Work</div>
+      <h2 class="text-4xl md:text-6xl font-heading font-bold">
+        Before &amp; After Across <span class="text-primary">Orange County</span>
+      </h2>
+      <p class="text-muted-foreground text-lg mt-4 max-w-xl mx-auto">
+        Homes, storefronts, hard-water restorations — a sampling of recent jobs.
+      </p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div
+          class="aspect-square neo-card bg-muted overflow-hidden"
+          aria-label={`Gallery placeholder ${i + 1}`}
+        >
+          <img
+            src={`/images/gallery/${i + 1}.jpg`}
+            alt="Giraffe Cleaning before/after"
+            loading="lazy"
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none';this.parentElement.classList.add('flex','items-center','justify-center');this.parentElement.insertAdjacentHTML('beforeend','<span class=\'text-muted-foreground text-xs\'>Photo coming</span>');"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

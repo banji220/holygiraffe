@@ -1,0 +1,69 @@
+---
+// Google Maps embed wrapped in a neo-card frame.
+// Uses the legacy `output=embed` URL — no API key required and works
+// for static embeds. Iframe loads lazily so it doesn't block LCP.
+//
+// Mobile-first sizing: defaults to a phone-friendly height with progressive
+// enhancement on larger viewports. Pass `aspectRatio` (e.g. "16/9") to use
+// an aspect-ratio container instead of fixed heights.
+
+export interface Props {
+  query?: string;
+  zoom?: number;
+  /** Height in pixels on desktop (md+). Mobile uses ~70% of this. */
+  height?: number;
+  /** Optional title for accessibility/SEO. */
+  title?: string;
+  /** If set, container uses this aspect ratio instead of fixed heights. */
+  aspectRatio?: string;
+}
+
+const {
+  query = 'Orange County, CA',
+  zoom = 10,
+  height = 420,
+  title = `Map of ${query} — Giraffe Window Cleaning service area`,
+  aspectRatio,
+} = Astro.props;
+
+const src = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=${zoom}&output=embed`;
+const mobileHeight = Math.round(height * 0.66); // 277px when desktop is 420
+const tabletHeight = Math.round(height * 0.85); // 357px when desktop is 420
+---
+
+<div
+  class="neo-card overflow-hidden border-[3px] border-foreground"
+  style={`box-shadow: var(--shadow-brutal); ${aspectRatio ? `aspect-ratio: ${aspectRatio};` : ''}`}
+>
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    style={`border:0; display:block; width:100%; ${aspectRatio ? 'height:100%;' : ''}`}
+    class={aspectRatio
+      ? 'w-full h-full'
+      : `w-full h-[${mobileHeight}px] sm:h-[${tabletHeight}px] md:h-[${height}px]`}
+    allowfullscreen
+  ></iframe>
+</div>
+
+{!aspectRatio && (
+  <style define:vars={{ mobileHeight: `${mobileHeight}px`, tabletHeight: `${tabletHeight}px`, desktopHeight: `${height}px` }}>
+    /* Inline responsive heights — Tailwind arbitrary values inside a string
+       attribute don't always purge correctly, so we use a CSS var fallback. */
+    div > iframe {
+      height: var(--mobileHeight);
+    }
+    @media (min-width: 640px) {
+      div > iframe {
+        height: var(--tabletHeight);
+      }
+    }
+    @media (min-width: 768px) {
+      div > iframe {
+        height: var(--desktopHeight);
+      }
+    }
+  </style>
+)}

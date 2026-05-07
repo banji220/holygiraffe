@@ -1,0 +1,28 @@
+---
+// CSS-only port of the Framer-Motion GiraffePatches component.
+// Decorative animated background blobs in giraffe-spot tones.
+
+export interface Props {
+  variant?: 'light' | 'dark';
+}
+
+const { variant = 'light' } = Astro.props;
+const opacityMultiplier = variant === 'dark' ? 1.3 : 1;
+
+const patches = [
+  { className: 'absolute -top-10 -left-12 w-52 h-40 animate-patch-a', color: '#B5762A', borderRadius: '60% 40% 50% 45%', baseOpacity: 0.45 },
+  { className: 'absolute top-6 right-4 w-36 h-28 animate-patch-b',     color: '#9B6530', borderRadius: '45% 55% 40% 60%', baseOpacity: 0.35 },
+  { className: 'absolute -bottom-8 -right-10 w-56 h-44 animate-patch-c', color: '#C8884A', borderRadius: '50% 40% 55% 45%', baseOpacity: 0.40 },
+  { className: 'absolute bottom-12 left-8 w-32 h-28 animate-patch-d',  color: '#A37038', borderRadius: '40% 55% 45% 50%', baseOpacity: 0.30 },
+  { className: 'absolute top-1/3 left-[20%] w-24 h-20 animate-patch-e', color: '#D49B55', borderRadius: '55% 45% 50% 40%', baseOpacity: 0.25 },
+];
+---
+
+<div class="hidden md:block pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+  {patches.map((p) => (
+    <div
+      class={p.className}
+      style={`background-color: ${p.color}; border-radius: ${p.borderRadius}; opacity: ${p.baseOpacity * opacityMultiplier};`}
+    />
+  ))}
+</div>

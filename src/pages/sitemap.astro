@@ -1,0 +1,79 @@
+---
+// User-facing HTML sitemap. Distinct from /sitemap-index.xml (for crawlers).
+// Acts as an extra crawl-path for Google and a navigational fallback for users.
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import services from '../data/serviceData';
+import cities from '../data/cityData';
+import { breadcrumbSchema, webPageSchema } from '../lib/schema';
+
+const title = 'Sitemap | Giraffe Window Cleaning';
+const description = 'Browse every page on holygiraffe.com — services, service areas, and company pages.';
+const path = '/sitemap';
+
+const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name));
+
+const schemas = [
+  webPageSchema({ title, description, path }),
+  breadcrumbSchema([{ name: 'Sitemap', path }]),
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schemas={schemas}>
+  {/* Breadcrumb */}
+  <div class="container mx-auto px-6 pt-24 pb-4">
+    <nav aria-label="Breadcrumb" class="flex items-center gap-1 text-sm text-muted-foreground">
+      <a href="/" class="hover:text-foreground transition-colors">Home</a>
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-foreground font-medium">Sitemap</span>
+    </nav>
+  </div>
+
+  <section class="container mx-auto px-6 py-12 md:py-16">
+    <div class="max-w-3xl mb-10">
+      <h1 class="text-4xl md:text-6xl font-heading font-bold mb-4">
+        <span class="text-primary">Sitemap</span>
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        Every page on holygiraffe.com — organised by section.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl">
+      <div class="neo-card p-6">
+        <h2 class="font-heading font-bold text-xl mb-4">Company</h2>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+          <li><a href="/about" class="hover:text-primary transition-colors">About</a></li>
+          <li><a href="/faq" class="hover:text-primary transition-colors">FAQ</a></li>
+          <li><a href="/get-a-quote" class="hover:text-primary transition-colors">Get a Quote</a></li>
+        </ul>
+      </div>
+
+      <div class="neo-card p-6">
+        <h2 class="font-heading font-bold text-xl mb-4">Services</h2>
+        <ul class="space-y-2 text-sm">
+          {services.map((s) => (
+            <li><a href={`/${s.slug}`} class="hover:text-primary transition-colors">{s.name}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="neo-card p-6 md:col-span-2 lg:col-span-1">
+        <h2 class="font-heading font-bold text-xl mb-4">Service Areas ({sortedCities.length})</h2>
+        <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+          {sortedCities.map((c) => (
+            <li><a href={`/window-cleaning-${c.slug}`} class="hover:text-primary transition-colors">{c.name}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 max-w-3xl text-sm text-muted-foreground">
+      <p>
+        Looking for the machine-readable sitemap?
+        <a href="/sitemap-index.xml" class="text-primary underline hover:text-primary/80">/sitemap-index.xml</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

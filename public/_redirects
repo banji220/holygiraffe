@@ -1,0 +1,2 @@
+# Cloudflare Pages redirects.
+https://www.holygiraffe.com/* https://holygiraffe.com/:splat 301!

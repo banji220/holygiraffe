@@ -1,0 +1,77 @@
+---
+// Verbatim port of Lovable's ServicesSection.tsx.
+import GiraffePatches from './GiraffePatches.astro';
+
+const services = [
+  {
+    icon: 'home',
+    title: 'Residential Window Cleaning',
+    description: 'Interior and exterior window cleaning for homes of all sizes across Orange County. We reach every window, every floor.',
+    color: 'bg-primary text-primary-foreground',
+    link: '/residential-window-cleaning',
+  },
+  {
+    icon: 'building',
+    title: 'Commercial Window Cleaning',
+    description: 'Keep your storefront and office windows spotless. Regular contracts available for Orange County businesses.',
+    color: 'bg-coral text-coral-foreground',
+    link: '/commercial-window-cleaning',
+  },
+  {
+    icon: 'sparkles',
+    title: 'Deep Clean & Restoration',
+    description: 'Hard water stain removal, screen cleaning, and frame washing for a complete refresh.',
+    color: 'bg-mint text-mint-foreground',
+    link: '/hard-water-stain-removal',
+  },
+  {
+    icon: 'shield',
+    title: 'Gutter & Pressure Wash',
+    description: 'Complete exterior care including gutter cleaning and pressure washing services in Orange County.',
+    color: 'bg-accent text-accent-foreground',
+    link: '/gutter-cleaning',
+  },
+];
+
+// Inline SVG icon paths — replaces lucide-react.
+const iconPaths: Record<string, string> = {
+  home:     '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  building: '<rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
+  sparkles: '<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>',
+  shield:   '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+};
+---
+
+<section
+  id="services"
+  class="py-12 sm:py-16 md:py-20 relative overflow-hidden"
+  aria-label="Our window cleaning services"
+>
+  <GiraffePatches />
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="text-center mb-14">
+      <h2 class="text-4xl md:text-6xl font-heading font-bold">
+        Why Choose Giraffe Cleaning for <span class="text-primary">Window Washing</span> &amp; Window Cleaning
+      </h2>
+      <p class="text-muted-foreground text-lg mt-4 max-w-xl mx-auto">
+        From cozy homes to towering offices — our giraffe-length reach has you covered.
+        We also offer <a href="/solar-panel-cleaning" class="text-primary hover:underline">solar panel cleaning</a> across Orange County.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {services.map((service) => (
+        <a href={service.link} class="neo-card-hover p-6 flex flex-col h-full">
+          <div
+            class={`w-14 h-14 rounded-xl border-[3px] border-foreground flex items-center justify-center mb-4 ${service.color}`}
+            style="box-shadow: var(--shadow-brutal-sm);"
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={iconPaths[service.icon]} />
+          </div>
+          <h3 class="font-heading font-bold text-xl mb-2">{service.title}</h3>
+          <p class="text-muted-foreground text-sm flex-1">{service.description}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

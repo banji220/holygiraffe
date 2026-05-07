@@ -1,0 +1,56 @@
+---
+// Homepage. Assembles every section in the same order as the original
+// Lovable Index.tsx — but server-rendered HTML with no SPA shell.
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ReviewBadge from '../components/ReviewBadge.astro';
+import MarqueeBanner from '../components/MarqueeBanner.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+import HowItWorksSection from '../components/HowItWorksSection.astro';
+import GallerySection from '../components/GallerySection.astro';
+import TestimonialsSection from '../components/TestimonialsSection.astro';
+import ServiceAreaSection from '../components/ServiceAreaSection.astro';
+import QuoteFormSection from '../components/QuoteFormSection.astro';
+import FaqSection, { faqs as homepageFaqs } from '../components/FaqSection.astro';
+import CtaSection from '../components/CtaSection.astro';
+import { cleaningServiceSchema, faqSchema, webPageSchema, ogImageSchema } from '../lib/schema';
+
+const title = 'Giraffe Window Cleaning — Professional Window Cleaning in Orange County, CA';
+const description =
+  'Giraffe Cleaning offers professional window cleaning & window washing in Orange County, CA. 5-star rated, eco-friendly, streak-free results. Free quotes — call (949) 315-7142.';
+
+const schemas = [
+  cleaningServiceSchema(),
+  webPageSchema({ title, description, path: '/' }),
+  ogImageSchema(),
+  faqSchema(homepageFaqs),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path="/"
+  schemas={schemas}
+  preloadImages={['/giraffe-logo-g.png']}
+>
+  <HeroSection />
+
+  {/* M6: visible "5.0 on Google" rating widget near hero with link to GBP. */}
+  <section class="py-2 md:py-4 -mt-6 md:-mt-10" aria-label="Customer rating">
+    <div class="container mx-auto px-6 flex justify-center">
+      <ReviewBadge variant="inline" />
+    </div>
+  </section>
+
+  <MarqueeBanner />
+  <ServicesSection />
+  <HowItWorksSection />
+  <GallerySection />
+  <TestimonialsSection />
+  <ServiceAreaSection />
+  <QuoteFormSection />
+  <FaqSection />
+  <CtaSection />
+</BaseLayout>

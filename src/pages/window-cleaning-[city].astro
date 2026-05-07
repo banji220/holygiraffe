@@ -1,0 +1,229 @@
+---
+// Dynamic route: pre-renders one HTML file per city at build time.
+// Reads from src/data/cityData.ts (35 cities), so updates flow through.
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteFormSection from '../components/QuoteFormSection.astro';
+import cities from '../data/cityData';
+import { cityMap } from '../data/cityData';
+import {
+  localBusinessSchema,
+  breadcrumbSchema,
+  faqSchema,
+  webPageSchema,
+} from '../lib/schema';
+
+export async function getStaticPaths() {
+  return cities.map((city) => ({
+    params: { city: city.slug },
+  }));
+}
+
+const { city: citySlug } = Astro.params;
+const city = cityMap.get(citySlug!);
+if (!city) {
+  return Astro.redirect('/404');
+}
+
+const path = `/window-cleaning-${city.slug}`;
+const title = `Window Cleaning ${city.name} CA | Giraffe Cleaning`;
+const description = city.metaDescription;
+
+const serviceLinks = [
+  { name: 'Residential Window Cleaning', slug: 'residential-window-cleaning' },
+  { name: 'Commercial Window Cleaning',  slug: 'commercial-window-cleaning' },
+  { name: 'Screen Cleaning & Repair',    slug: 'screen-cleaning-repair' },
+  { name: 'Hard Water Stain Removal',    slug: 'hard-water-stain-removal' },
+  { name: 'Solar Panel Cleaning',        slug: 'solar-panel-cleaning' },
+  { name: 'Gutter Cleaning',             slug: 'gutter-cleaning' },
+  { name: 'Pressure Washing',            slug: 'pressure-washing' },
+];
+
+const nearby = city.nearby
+  .map((slug) => cityMap.get(slug))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+const schemas = [
+  localBusinessSchema({ cityName: city.name, citySlug: city.slug, description }),
+  webPageSchema({ title, description, path }),
+  breadcrumbSchema([{ name: `Window Cleaning in ${city.name}, CA`, path }]),
+  ...(city.faqs.length > 0 ? [faqSchema(city.faqs)] : []),
+];
+
+// Convert markdown-style links in answers to <a> tags.
+function renderLinks(text: string): string {
+  return text.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" class="text-primary underline hover:text-primary/80 transition-colors">$1</a>',
+  );
+}
+---
+
+<BaseLayout title={title} description={description} path={path} schemas={schemas}>
+  {/* Breadcrumb */}
+  <div class="container mx-auto px-4 sm:px-6 pt-24 pb-4">
+    <nav aria-label="Breadcrumb" class="flex items-center gap-1 text-sm text-muted-foreground">
+      <a href="/" class="hover:text-foreground transition-colors">Home</a>
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Service Areas</span>
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-foreground font-medium">{city.name}</span>
+    </nav>
+  </div>
+
+  {/* Hero */}
+  <section class="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-20">
+    <div class="max-w-3xl">
+      <div class="inline-flex items-center gap-2 neo-badge bg-primary text-primary-foreground mb-5 sm:mb-6">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        {city.name}, CA
+      </div>
+      <h1 class="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-5 sm:mb-6 leading-tight">
+        Window Cleaning in <span class="text-primary">{city.name}</span>, CA
+      </h1>
+      <p class="text-base sm:text-lg text-muted-foreground leading-relaxed mb-7 sm:mb-8">
+        {city.intro}
+      </p>
+      <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
+        <a
+          href="tel:+19493157142"
+          aria-label="Call Giraffe Cleaning at (949) 315-7142"
+          class="neo-btn neo-btn-primary inline-flex items-center gap-2 justify-center w-full sm:w-auto"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (949) 315-7142
+        </a>
+        <a href="/get-a-quote" class="neo-btn neo-btn-secondary inline-flex items-center gap-2 justify-center w-full sm:w-auto">
+          Get Free Quote
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* Extended content */}
+  {city.extendedContent.length > 0 && (
+    <section class="container mx-auto px-6 py-12">
+      <div class="max-w-3xl space-y-5">
+        {city.extendedContent.map((p) => (
+          <p class="text-muted-foreground leading-relaxed" set:html={renderLinks(p)} />
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* Services list */}
+  <section class="container mx-auto px-6 py-12 overflow-hidden">
+    <h2 class="text-3xl md:text-4xl font-heading font-bold mb-8">
+      Our Window Cleaning Services in <span class="text-primary">{city.name}</span>
+    </h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
+      {serviceLinks.map((s) => (
+        <a
+          href={`/${s.slug}`}
+          class="neo-card p-4 border-[3px] border-foreground flex items-center gap-3 hover:border-primary transition-colors group"
+        >
+          <div class="w-2 h-2 rounded-full bg-primary shrink-0"></div>
+          <span class="font-heading font-bold text-sm group-hover:text-primary transition-colors">{s.name}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {/* Why choose us */}
+  {city.whyChooseUs && (
+    <section class="container mx-auto px-6 py-12">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6">
+        Why {city.name} Homeowners Choose <span class="text-primary">Giraffe Cleaning</span>
+      </h2>
+      <p class="text-muted-foreground leading-relaxed max-w-3xl mb-6">{city.whyChooseUs}</p>
+      <div class="flex flex-wrap gap-3 max-w-3xl">
+        {[
+          'Locally owned & operated',
+          'Licensed & insured — $2M coverage',
+          'Eco-friendly purified water system',
+          '5-star rated on Google',
+        ].map((item) => (
+          <div class="flex items-center gap-2 text-sm">
+            <svg class="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span class="font-heading font-semibold">{item}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* CTA block */}
+  <section class="container mx-auto px-6 py-12">
+    <div class="neo-card border-[3px] border-foreground p-8 md:p-12 text-center max-w-3xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">
+        Get Your <span class="text-primary">Free Quote</span> in {city.name}
+      </h2>
+      <p class="text-muted-foreground mb-6 max-w-lg mx-auto">
+        Ready for spotless windows? Contact us today for a free, no-obligation
+        estimate for your {city.name} home or business.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="tel:+19493157142"
+          aria-label="Call Giraffe Cleaning at (949) 315-7142"
+          class="neo-btn neo-btn-primary inline-flex items-center gap-2 justify-center"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (949) 315-7142
+        </a>
+        <a href="/get-a-quote" class="neo-btn neo-btn-secondary inline-flex items-center gap-2 justify-center">
+          Request Free Quote
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <QuoteFormSection />
+
+  {/* Localized FAQs */}
+  {city.faqs.length > 0 && (
+    <section class="container mx-auto px-6 py-12 overflow-hidden">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-8">
+        {city.name} Window Cleaning <span class="text-primary">FAQ</span>
+      </h2>
+      <div class="max-w-3xl neo-faq space-y-3">
+        {city.faqs.map((faq) => (
+          <details class="neo-card px-5 border-[3px] border-foreground rounded-lg">
+            <summary class="font-heading font-bold text-sm text-left flex items-center justify-between gap-3 py-3">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                {faq.question}
+              </span>
+            </summary>
+            <div class="text-muted-foreground text-sm leading-relaxed pb-4 pt-1" set:html={renderLinks(faq.answer)} />
+          </details>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* Service areas near */}
+  {nearby.length > 0 && (
+    <section class="container mx-auto px-6 py-12 overflow-hidden">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-8">
+        Service Areas Near <span class="text-primary">{city.name}</span>
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {nearby.map((nc) => (
+          <a
+            href={`/window-cleaning-${nc.slug}`}
+            class="neo-card-hover p-5 flex items-center justify-between group"
+          >
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span class="font-heading font-bold text-sm">{nc.name}, CA</span>
+            </div>
+            <svg class="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>

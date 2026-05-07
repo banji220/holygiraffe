@@ -1,0 +1,70 @@
+---
+// Verbatim port of Lovable's FaqSection.tsx.
+// Radix Accordion replaced by native <details>/<summary> = zero JS.
+// FAQPage schema is emitted by the page that includes this section.
+
+import GiraffePatches from './GiraffePatches.astro';
+export const faqs = [
+  {
+    question: 'How often should I get my windows cleaned?',
+    answer: "For most homes, we recommend every 3 months. Commercial properties with high foot traffic or street-facing glass benefit from bi-weekly or monthly service. We'll help you find the right schedule based on your needs.",
+  },
+  {
+    question: 'Do you clean both interior and exterior windows?',
+    answer: 'Absolutely! Our Full Sparkle and Commercial plans include both interior and exterior window cleaning. Our Basic Clean covers exterior only, but you can always upgrade on the spot.',
+  },
+  {
+    question: "What's included in a window cleaning visit?",
+    answer: 'Every visit includes glass cleaning, sill wiping, and frame dusting. Our Full Sparkle plan also includes <a href="/screen-cleaning-repair" class="text-primary hover:underline">screen cleaning</a>. We leave zero streaks and zero mess — 100% guaranteed or your money BACK.',
+  },
+  {
+    question: 'Are your cleaning products safe for pets and kids?',
+    answer: 'Yes! We use eco-friendly, biodegradable cleaning solutions that are safe for your family, pets, and plants. No harsh chemicals, ever.',
+  },
+  {
+    question: 'How do you handle hard-to-reach or high windows?',
+    answer: "We use professional-grade water-fed poles and extension equipment to safely clean windows up to 4 stories high — no ladders leaning against your walls. That's the giraffe reach!",
+  },
+  {
+    question: 'Do I need to be home during the cleaning?',
+    answer: 'Not for exterior-only service. For interior cleaning, we just need access to the home. Many of our regulars leave a key or garage code so we can clean while they\'re at work.',
+  },
+  {
+    question: 'What if it rains after my windows are cleaned?',
+    answer: "Rain actually won't make your windows dirty — it's the dust and grime on the glass that causes spots. After a professional clean, rain will just bead off. But if you're not satisfied, we'll come back free of charge.",
+  },
+  {
+    question: 'How do I get a quote?',
+    answer: 'Easy! Fill out our free quote form on the website, call us at <a href="tel:+19493157142" class="text-primary hover:underline">(949) 315-7142</a>, or email <a href="mailto:moly@holygiraffe.com" class="text-primary hover:underline">moly@holygiraffe.com</a>. We\'ll get back to you within 24 hours with a no-obligation estimate.',
+  },
+  {
+    question: "What's the difference between window washing and window cleaning?",
+    answer: "There's no difference — window washing and window cleaning are two names for the same professional service. At Giraffe Cleaning, we provide expert window washing and cleaning for homes and businesses throughout Orange County. Whether you're searching for window washing near me or window cleaning Orange County, you'll find us ready to deliver streak-free results.",
+  },
+];
+---
+
+<section id="faq" class="py-12 sm:py-16 md:py-20 relative overflow-hidden" aria-label="Frequently asked questions">
+  <GiraffePatches />
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-14">
+      <h2 class="text-4xl md:text-6xl font-heading font-bold">
+        Frequently Asked Questions About <span class="text-primary">Window Cleaning</span> in Orange County
+      </h2>
+      <p class="text-muted-foreground text-lg mt-4 max-w-xl mx-auto">
+        Everything you need to know about our window cleaning services.
+      </p>
+    </div>
+
+    <div class="max-w-3xl mx-auto neo-faq space-y-4">
+      {faqs.map((faq) => (
+        <details class="neo-card px-6 py-2 border-[3px] border-foreground rounded-lg">
+          <summary class="font-heading font-bold text-left text-base flex items-center justify-between gap-4 py-2">
+            {faq.question}
+          </summary>
+          <div class="text-muted-foreground text-sm leading-relaxed pb-4 pt-2" set:html={faq.answer} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

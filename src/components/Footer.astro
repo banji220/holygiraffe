@@ -1,0 +1,83 @@
+---
+// Verbatim port of Lovable's Footer.tsx.
+import { NAP } from '../consts';
+
+const year = new Date().getFullYear();
+
+const services = [
+  { label: 'Residential Window Cleaning', href: '/residential-window-cleaning' },
+  { label: 'Commercial Window Cleaning',  href: '/commercial-window-cleaning' },
+  { label: 'Screen Cleaning & Repair',    href: '/screen-cleaning-repair' },
+  { label: 'Hard Water Stain Removal',    href: '/hard-water-stain-removal' },
+  { label: 'Solar Panel Cleaning',        href: '/solar-panel-cleaning' },
+  { label: 'Gutter Cleaning',             href: '/gutter-cleaning' },
+  { label: 'Pressure Washing',            href: '/pressure-washing' },
+];
+
+const featuredCities = [
+  'aliso-viejo','anaheim','costa-mesa','dana-point','fullerton',
+  'huntington-beach','irvine','ladera-ranch','laguna-beach','laguna-niguel',
+  'lake-forest','mission-viejo','newport-beach','orange',
+  'rancho-santa-margarita','san-clemente','san-juan-capistrano','tustin','yorba-linda',
+];
+
+const cityName = (slug: string) =>
+  slug.split('-').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+---
+
+<footer class="bg-foreground text-background py-12">
+  <div class="container mx-auto px-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <div>
+        <div class="font-heading font-bold text-2xl mb-3 flex items-center gap-2">
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-background text-foreground font-black">G</span>
+          Giraffe<span class="text-primary">Cleaning</span>
+        </div>
+        <p class="text-background/60 text-sm max-w-xs">
+          Professional window cleaning with a reach like no other. Eco-friendly,
+          reliable, and always streak-free — your trusted Orange County window cleaners.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-heading font-bold text-lg mb-3">Services</h4>
+        <div class="flex flex-col gap-2 text-sm text-background/60">
+          {services.map((s) => (
+            <a href={s.href} class="hover:text-background transition-colors">{s.label}</a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-heading font-bold text-lg mb-3">Service Areas</h4>
+        <div class="flex flex-col gap-2 text-sm text-background/60">
+          {featuredCities.map((slug) => (
+            <a href={`/window-cleaning-${slug}`} class="hover:text-background transition-colors">{cityName(slug)}</a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-heading font-bold text-lg mb-3">Quick Links</h4>
+        <div class="flex flex-col gap-2 text-sm text-background/60 mb-6">
+          <a href="/" class="hover:text-background transition-colors">Home</a>
+          <a href="/about" class="hover:text-background transition-colors">About Us</a>
+          <a href="/faq" class="hover:text-background transition-colors">FAQ</a>
+          <a href="/get-a-quote" class="hover:text-background transition-colors">Get a Quote</a>
+          <a href="/sitemap" class="hover:text-background transition-colors">Sitemap</a>
+        </div>
+
+        <h4 class="font-heading font-bold text-lg mb-3">Contact</h4>
+        <address class="not-italic flex flex-col gap-2 text-sm text-background/60">
+          <span class="font-heading font-bold text-background">Giraffe Cleaning</span>
+          <span>📍 Orange County, CA</span>
+          <a href={NAP.phoneLink} aria-label={`Call Giraffe Cleaning at ${NAP.phoneDisplay}`} class="hover:text-background transition-colors">📞 {NAP.phoneDisplay}</a>
+          <a href={NAP.emailLink} aria-label="Email Giraffe Cleaning" class="hover:text-background transition-colors">📧 {NAP.email}</a>
+        </address>
+      </div>
+    </div>
+    <div class="border-t border-background/20 pt-6 text-center text-sm text-background/40">
+      © {year} Giraffe Cleaning. All rights reserved. Made with 🦒 and 💧
+    </div>
+  </div>
+</footer>

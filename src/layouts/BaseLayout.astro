@@ -1,0 +1,138 @@
+---
+// Every page passes its SEO + schema through here. Output is fully static
+// HTML at build time. Only client JS shipped is GA4 (async, external) plus
+// any island a page opts into.
+
+import { SITE, ANALYTICS, META } from '../consts';
+import { resolveSeo, type SeoProps } from '../lib/seo';
+import { organizationSchema, websiteSchema } from '../lib/schema';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import FloatingCallButton from '../components/FloatingCallButton.astro';
+import '../styles/global.css';
+
+export interface Props extends SeoProps {
+  /** JSON-LD blocks. Each is serialized into its own script tag. */
+  schemas?: unknown[];
+  /** Skip GA4 (e.g. for /404). */
+  noAnalytics?: boolean;
+  /** Optional className on <body>. */
+  bodyClass?: string;
+  /** Above-the-fold images to <link rel="preload"> for LCP. */
+  preloadImages?: string[];
+}
+
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  noindex,
+  ogType,
+  schemas = [],
+  noAnalytics = false,
+  bodyClass = '',
+  preloadImages = [],
+} = Astro.props;
+
+const seo = resolveSeo({ title, description, path, ogImage, noindex, ogType });
+
+// WebSite + Organization fire on every page so crawlers always see the
+// site identity entities. Page-specific schemas (CleaningService, Service,
+// FAQPage, BreadcrumbList, etc.) come in via the `schemas` prop.
+const baseSchemas = [websiteSchema(), organizationSchema()];
+const validSchemas = [...baseSchemas, ...schemas].filter(
+  (s) => s !== null && s !== undefined,
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    {/* Primary meta */}
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <link rel="canonical" href={seo.canonical} />
+    {seo.noindex
+      ? <meta name="robots" content="noindex,nofollow" />
+      : <meta name="robots" content="index,follow,max-image-preview:large" />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content={seo.ogType} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:image" content={seo.ogImage} />
+    <meta property="og:image:width" content={String(SITE.ogImageWidth)} />
+    <meta property="og:image:height" content={String(SITE.ogImageHeight)} />
+    <meta property="og:locale" content={META.locale} />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content={META.twitterCard} />
+    <meta name="twitter:title" content={seo.title} />
+    <meta name="twitter:description" content={seo.description} />
+    <meta name="twitter:image" content={seo.ogImage} />
+
+    {/* Favicon + theme color (matches the brand orange) */}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f48c25" />
+
+    {/* Font preconnects — Google Fonts CSS request needs to start in parallel
+        with the HTML parse, otherwise it blocks first paint. */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+    {/* Above-the-fold image preloads — declared per page to avoid waste. */}
+    {preloadImages.map((src) => (
+      <link rel="preload" as="image" href={src} fetchpriority="high" />
+    ))}
+
+    {/* JSON-LD */}
+    {validSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+
+    {/* GA4 — async external; loads after critical content */}
+    {!noAnalytics && (
+      <>
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.ga4Id}`}
+        ></script>
+        <script
+          set:html={`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${ANALYTICS.ga4Id}', { anonymize_ip: true });
+          `}
+        ></script>
+      </>
+    )}
+  </head>
+  <body class={bodyClass}>
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-black"
+    >
+      Skip to content
+    </a>
+
+    <Navbar />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+    <FloatingCallButton />
+  </body>
+</html>

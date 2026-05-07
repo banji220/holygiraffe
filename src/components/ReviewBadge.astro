@@ -1,0 +1,78 @@
+---
+// Visible star rating widget that links to the Google Business Profile.
+// Static HTML — no third-party widget script, no JS, no extra requests.
+// Action plan M6: "Add visible star rating widget near homepage hero" +
+// "Read our Google Reviews CTA linking to GBP profile."
+
+import { REVIEWS, SOCIAL } from '../consts';
+
+export interface Props {
+  /** Visual variant. */
+  variant?: 'inline' | 'card';
+}
+
+const { variant = 'inline' } = Astro.props;
+const fullStars = Math.floor(Number(REVIEWS.ratingValue));
+const hasHalf = Number(REVIEWS.ratingValue) - fullStars >= 0.5;
+---
+
+{variant === 'inline' ? (
+  <a
+    href={SOCIAL.gbpUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="inline-flex items-center gap-3 px-4 py-2 rounded-xl border-[3px] border-foreground bg-card hover:bg-mint/30 transition-colors group"
+    style="box-shadow: var(--shadow-brutal-sm);"
+    aria-label={`${REVIEWS.ratingValue} stars on Google — read our reviews`}
+  >
+    <span class="flex gap-0.5 text-yellow-500" aria-hidden="true">
+      {Array.from({ length: fullStars }).map(() => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      ))}
+      {hasHalf && (
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <defs>
+            <linearGradient id="halfStar"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient>
+          </defs>
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#halfStar)" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      )}
+    </span>
+    <div class="flex flex-col leading-tight">
+      <span class="font-heading font-bold text-sm">
+        <span class="text-foreground">{REVIEWS.ratingValue}</span>
+        <span class="text-muted-foreground"> on Google</span>
+      </span>
+      <span class="text-xs text-muted-foreground group-hover:text-primary transition-colors">
+        Read Google Reviews →
+      </span>
+    </div>
+  </a>
+) : (
+  <a
+    href={SOCIAL.gbpUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="neo-card-hover p-6 flex items-center gap-4"
+    aria-label={`${REVIEWS.ratingValue} stars on Google — read our reviews`}
+  >
+    <div
+      class="w-14 h-14 rounded-xl border-[3px] border-foreground bg-yellow-300 flex items-center justify-center shrink-0"
+      style="box-shadow: var(--shadow-brutal-sm);"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" class="text-yellow-700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <div>
+      <div class="flex items-center gap-2">
+        <span class="font-heading font-black text-2xl">{REVIEWS.ratingValue}</span>
+        <span class="flex gap-0.5 text-yellow-500" aria-hidden="true">
+          {Array.from({ length: fullStars }).map(() => (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          ))}
+        </span>
+      </div>
+      <p class="font-heading font-bold text-sm">Rated {REVIEWS.ratingValue} on Google</p>
+      <p class="text-xs text-muted-foreground">Read Google Reviews →</p>
+    </div>
+  </a>
+)}

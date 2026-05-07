@@ -1,0 +1,29 @@
+---
+// Verbatim port of Lovable's CtaSection.tsx.
+import GiraffePatches from './GiraffePatches.astro';
+import { NAP } from '../consts';
+---
+
+<section id="contact" class="py-12 sm:py-16 md:py-20 bg-primary relative overflow-hidden" aria-label="Contact us">
+  <GiraffePatches variant="dark" />
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="text-4xl md:text-6xl font-heading font-bold text-primary-foreground mb-4">
+        Ready for sparkling windows?
+      </h2>
+      <p class="text-primary-foreground/80 text-lg mb-8">
+        Join the happy homeowners and businesses who trust Giraffe Window Cleaning for crystal-clear results across Orange County.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href={NAP.phoneLink} aria-label={`Call Giraffe Cleaning at ${NAP.phoneDisplay}`} class="neo-btn bg-accent text-accent-foreground text-base">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          {NAP.phoneDisplay}
+        </a>
+        <a href={NAP.emailLink} aria-label="Email Giraffe Cleaning" class="neo-btn bg-card text-foreground text-base">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          {NAP.email}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

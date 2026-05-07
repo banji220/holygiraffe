@@ -1,0 +1,165 @@
+---
+// Real testimonials pulled from Google Business Profile reviews.
+// Source list: src/data/reviews.ts.
+//
+// Mobile-first carousel:
+//  - Mobile (<640px): 1 card visible, 88% width with peek of the next card
+//  - Tablet (640–767px): 2 cards visible
+//  - Desktop (≥768px): 3 cards visible
+//  - Native horizontal swipe (touch) on every device
+//  - Prev/next buttons + position indicator BELOW the cards, centered,
+//    always visible regardless of viewport
+//  - Tap targets are 48×48px on mobile (Apple HIG / WCAG 2.5.5 guidance)
+//
+// JS footprint: ~360 bytes inline. Astro `is:inline` keeps it un-bundled.
+
+import { FEATURED_REVIEWS } from '../data/reviews';
+import { SOCIAL, REVIEWS as REVIEW_STATS } from '../consts';
+
+/** Loose truncation so cards feel substantial without ballooning height. */
+function preview(text: string, max = 380): string {
+  const collapsed = text.replace(/\n+/g, ' ').trim();
+  if (collapsed.length <= max) return collapsed;
+  const cut = collapsed.slice(0, max).replace(/\s+\S*$/, '');
+  return `${cut}…`;
+}
+---
+
+<section class="py-12 sm:py-16 md:py-20 relative overflow-hidden" aria-label="Customer testimonials">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-12">
+      <div class="neo-badge bg-mint text-mint-foreground mb-4 mx-auto">
+        ⭐ {REVIEW_STATS.ratingValue} on Google
+      </div>
+      <h2 class="text-4xl md:text-6xl font-heading font-bold">
+        What Orange County <span class="text-primary">Loves About Us</span>
+      </h2>
+      <p class="text-muted-foreground text-lg mt-4 max-w-xl mx-auto">
+        Real reviews from real customers on our Google Business Profile.
+      </p>
+    </div>
+
+    {/* Carousel root — JS hooks into [data-carousel] */}
+    <div class="relative" data-carousel>
+      {/* Track: horizontal scroll-snap container */}
+      <div
+        data-carousel-track
+        class="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-6 px-6 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {FEATURED_REVIEWS.map((review) => (
+          <article
+            data-card
+            class="snap-start shrink-0 w-[88%] sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] neo-card p-6 flex flex-col"
+          >
+            <div class="flex items-center gap-1 mb-3 text-yellow-500" aria-label={`${review.rating} out of 5 stars`}>
+              {Array.from({ length: review.rating }).map(() => (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              ))}
+            </div>
+            <blockquote class="text-foreground/85 mb-4 leading-relaxed flex-1 text-[0.95rem]">
+              "{preview(review.body)}"
+            </blockquote>
+            <footer class="border-t-2 border-foreground/10 pt-3">
+              <p class="font-heading font-bold text-base">{review.name}</p>
+              <p class="text-xs text-muted-foreground mt-0.5">
+                {review.timeAgo}
+                {review.location && <> · {review.location}</>}
+              </p>
+            </footer>
+          </article>
+        ))}
+      </div>
+
+      {/* Controls row — always visible, centered, mobile-first sizing */}
+      <div class="flex items-center justify-center gap-4 mt-6">
+        <button
+          type="button"
+          data-carousel-prev
+          aria-label="Previous reviews"
+          class="flex w-12 h-12 items-center justify-center rounded-full border-[3px] border-foreground bg-card hover:bg-accent active:translate-x-[2px] active:translate-y-[2px] transition-all"
+          style="box-shadow: var(--shadow-brutal-sm);"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+
+        {/* Position indicator — JS updates via data-current */}
+        <div
+          class="flex items-center justify-center min-w-[80px] px-4 h-12 rounded-full border-[3px] border-foreground bg-card font-heading font-bold text-sm"
+          style="box-shadow: var(--shadow-brutal-sm);"
+          aria-live="polite"
+        >
+          <span data-carousel-current>1</span>
+          <span class="text-muted-foreground mx-1.5">/</span>
+          <span>{FEATURED_REVIEWS.length}</span>
+        </div>
+
+        <button
+          type="button"
+          data-carousel-next
+          aria-label="Next reviews"
+          class="flex w-12 h-12 items-center justify-center rounded-full border-[3px] border-foreground bg-coral text-coral-foreground hover:bg-coral/90 active:translate-x-[2px] active:translate-y-[2px] transition-all"
+          style="box-shadow: var(--shadow-brutal-sm);"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="text-center mt-10">
+      <a
+        href={SOCIAL.gbpUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="neo-btn bg-card text-foreground inline-flex items-center gap-2 text-base"
+      >
+        Read Google Reviews
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+{/* Inline carousel script — Astro `is:inline` keeps it un-bundled.
+    Wires prev/next + updates the position indicator on scroll. */}
+<script is:inline>
+  document.querySelectorAll('[data-carousel]').forEach(function (root) {
+    var track = root.querySelector('[data-carousel-track]');
+    var prev = root.querySelector('[data-carousel-prev]');
+    var next = root.querySelector('[data-carousel-next]');
+    var current = root.querySelector('[data-carousel-current]');
+    if (!track) return;
+    function step() {
+      var card = track.querySelector('[data-card]');
+      if (!card) return track.clientWidth;
+      var styles = getComputedStyle(track);
+      var gap = parseInt(styles.columnGap || styles.gap || '16', 10) || 16;
+      return card.offsetWidth + gap;
+    }
+    if (prev) prev.addEventListener('click', function () {
+      track.scrollBy({ left: -step(), behavior: 'smooth' });
+    });
+    if (next) next.addEventListener('click', function () {
+      track.scrollBy({ left: step(), behavior: 'smooth' });
+    });
+    if (current) {
+      var update = function () {
+        var s = step();
+        if (s <= 0) return;
+        var idx = Math.round(track.scrollLeft / s) + 1;
+        var max = track.querySelectorAll('[data-card]').length;
+        current.textContent = String(Math.max(1, Math.min(idx, max)));
+      };
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    }
+  });
+</script>

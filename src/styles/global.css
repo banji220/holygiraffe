@@ -1,0 +1,193 @@
+/* Verbatim port of the Lovable index.css — DO NOT change without
+   confirming visual fidelity. */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 96%;
+    --foreground: 0 0% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+
+    --primary: 30 90% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 160 52% 71%;
+    --secondary-foreground: 0 0% 8%;
+
+    --muted: 40 20% 92%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 48 100% 72%;
+    --accent-foreground: 0 0% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --coral: 4 90% 68%;
+    --coral-foreground: 0 0% 100%;
+
+    --mint: 160 52% 71%;
+    --mint-foreground: 0 0% 8%;
+
+    --yellow: 48 100% 72%;
+    --yellow-foreground: 0 0% 8%;
+
+    --border: 0 0% 8%;
+    --input: 0 0% 8%;
+    --ring: 217 91% 60%;
+
+    --radius: 1rem;
+
+    --shadow-brutal: 5px 5px 0px 0px hsl(0 0% 8%);
+    --shadow-brutal-sm: 3px 3px 0px 0px hsl(0 0% 8%);
+    --shadow-brutal-hover: 2px 2px 0px 0px hsl(0 0% 8%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    background-image: radial-gradient(circle, hsl(0 0% 8% / 0.12) 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .neo-card {
+    @apply bg-card rounded-2xl border-[3px] border-foreground;
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .neo-card-hover {
+    @apply neo-card transition-all duration-150;
+  }
+
+  .neo-card-hover:hover {
+    box-shadow: var(--shadow-brutal-hover);
+    transform: translate(3px, 3px);
+  }
+
+  .neo-badge {
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border-[2px] border-foreground text-sm font-heading font-semibold;
+    box-shadow: var(--shadow-brutal-sm);
+  }
+
+  .neo-btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-[3px] border-foreground font-heading font-bold text-lg transition-all duration-150;
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .neo-btn:hover {
+    box-shadow: var(--shadow-brutal-hover);
+    transform: translate(3px, 3px);
+  }
+
+  .neo-btn:active {
+    box-shadow: none;
+    transform: translate(5px, 5px);
+  }
+
+  .neo-btn-primary {
+    @apply neo-btn bg-coral text-coral-foreground;
+  }
+
+  .neo-btn-secondary {
+    @apply neo-btn bg-card text-foreground;
+  }
+
+  /* No-JS accordion using <details>/<summary> — replaces Radix Accordion. */
+  .neo-faq summary::-webkit-details-marker { display: none; }
+  .neo-faq summary { list-style: none; cursor: pointer; }
+  .neo-faq details > summary::after {
+    content: '+';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: hsl(var(--primary));
+    transition: transform 150ms ease;
+  }
+  .neo-faq details[open] > summary::after {
+    content: '−';
+  }
+
+  /* Dropdown using <details> — replaces Framer Motion AnimatePresence menus. */
+  .nav-dropdown summary::-webkit-details-marker { display: none; }
+  .nav-dropdown summary { list-style: none; cursor: pointer; }
+}
+
+@layer utilities {
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  .animate-marquee {
+    animation: marquee 10s linear infinite;
+  }
+
+  .animate-marquee-gallery {
+    animation: marquee 35s linear infinite;
+  }
+
+  .animate-marquee-gallery-reverse {
+    animation: marquee-reverse 40s linear infinite;
+  }
+
+  .animate-marquee-gallery-slow {
+    animation: marquee 45s linear infinite;
+  }
+
+  /* Replicates the GiraffePatches Framer-Motion float without JS. */
+  @keyframes patch-float-a {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(14px) rotate(3deg); }
+  }
+  @keyframes patch-float-b {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-12px) rotate(-2deg); }
+  }
+  @keyframes patch-float-c {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(12px) rotate(2deg); }
+  }
+  @keyframes patch-float-d {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-10px) rotate(-2.5deg); }
+  }
+  @keyframes patch-float-e {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(8px) rotate(1.5deg); }
+  }
+
+  .animate-patch-a { animation: patch-float-a 6s ease-in-out infinite; }
+  .animate-patch-b { animation: patch-float-b 5.2s ease-in-out infinite; }
+  .animate-patch-c { animation: patch-float-c 7s ease-in-out infinite; }
+  .animate-patch-d { animation: patch-float-d 4.8s ease-in-out infinite; }
+  .animate-patch-e { animation: patch-float-e 5.8s ease-in-out infinite; }
+}

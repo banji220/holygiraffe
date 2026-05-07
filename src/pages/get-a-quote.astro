@@ -1,0 +1,132 @@
+---
+// Get-a-Quote page — port of Lovable's ContactPage.tsx.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteFormSection from '../components/QuoteFormSection.astro';
+import GoogleMapEmbed from '../components/GoogleMapEmbed.astro';
+import ReviewBadge from '../components/ReviewBadge.astro';
+import { breadcrumbSchema, webPageSchema } from '../lib/schema';
+import cities from '../data/cityData';
+import { NAP } from '../consts';
+
+const title = 'Get a Free Quote | Giraffe Window Cleaning Orange County';
+const description =
+  'Request your free window cleaning estimate in Orange County. Fast response, no obligation. Call (949) 315-7142 or fill out our quick form.';
+const path = '/get-a-quote';
+
+const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name));
+
+const schemas = [
+  webPageSchema({ title, description, path }),
+  breadcrumbSchema([{ name: 'Get a Quote', path }]),
+];
+
+const trustSignals = [
+  { icon: 'clock',  text: 'We typically respond within 2 hours' },
+  { icon: 'shield', text: 'Licensed & insured — $2M liability coverage' },
+  { icon: 'star',   text: '5-star rated on Google' },
+];
+
+const iconPaths: Record<string, string> = {
+  clock:  '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>',
+  star:   '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  phone:  '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  mail:   '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  pin:    '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+};
+---
+
+<BaseLayout title={title} description={description} path={path} schemas={schemas}>
+  <div class="container mx-auto px-6 pt-24 pb-4">
+    <nav aria-label="Breadcrumb" class="flex items-center gap-1 text-sm text-muted-foreground">
+      <a href="/" class="hover:text-foreground transition-colors">Home</a>
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-foreground font-medium">Get a Quote</span>
+    </nav>
+  </div>
+
+  <section class="container mx-auto px-6 py-12 md:py-16">
+    <div class="max-w-3xl">
+      <h1 class="text-4xl md:text-6xl font-heading font-bold mb-6">
+        Get Your Free <span class="text-primary">Window Cleaning Quote</span>
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed mb-8">
+        Fill out the form below, and we'll get back to you with a no-obligation
+        estimate. Most quotes are returned within 2 hours during business hours.
+      </p>
+
+      {/* Direct contact cards */}
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <a href={NAP.phoneLink} aria-label={`Call Giraffe Cleaning at ${NAP.phoneDisplay}`} class="neo-card p-4 border-[3px] border-foreground flex items-center gap-3 hover:border-primary transition-colors">
+          <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={iconPaths.phone} />
+          <div>
+            <span class="font-heading font-bold text-sm block">Call or Text</span>
+            <span class="text-muted-foreground text-sm">{NAP.phoneDisplay}</span>
+          </div>
+        </a>
+        <a href={NAP.emailLink} aria-label="Email Giraffe Cleaning" class="neo-card p-4 border-[3px] border-foreground flex items-center gap-3 hover:border-primary transition-colors">
+          <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={iconPaths.mail} />
+          <div>
+            <span class="font-heading font-bold text-sm block">Email</span>
+            <span class="text-muted-foreground text-sm">{NAP.email}</span>
+          </div>
+        </a>
+        <div class="neo-card p-4 border-[3px] border-foreground flex items-center gap-3">
+          <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={iconPaths.pin} />
+          <div>
+            <span class="font-heading font-bold text-sm block">Service Area</span>
+            <span class="text-muted-foreground text-sm">All of Orange County</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Trust signals */}
+      <div class="flex flex-wrap gap-4 mb-8">
+        {trustSignals.map((ts) => (
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <svg class="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={iconPaths[ts.icon]} />
+            <span>{ts.text}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* M6: Google review badge linking to GBP */}
+      <ReviewBadge variant="inline" />
+    </div>
+  </section>
+
+  {/* M6: Pin the actual business on Google Maps so visitors see our
+       listing — rating, hours, photos, reviews — without leaving the page. */}
+  <section class="container mx-auto px-6 py-8" aria-label="Service area map">
+    <h2 class="text-2xl md:text-3xl font-heading font-bold mb-6">
+      Find Us on <span class="text-primary">Google Maps</span>
+    </h2>
+    <div class="max-w-5xl">
+      <GoogleMapEmbed
+        query="Giraffe Window Cleaning, Orange County, CA"
+        zoom={11}
+        height={380}
+        title="Giraffe Window Cleaning on Google Maps — Orange County, CA"
+      />
+    </div>
+  </section>
+
+  <QuoteFormSection />
+
+  {/* Cities we serve */}
+  <section class="container mx-auto px-6 py-12">
+    <h2 class="text-3xl md:text-4xl font-heading font-bold mb-8">
+      Cities We <span class="text-primary">Serve</span>
+    </h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+      {sortedCities.map((c) => (
+        <a
+          href={`/window-cleaning-${c.slug}`}
+          class="neo-card p-3 border-[2px] border-foreground text-center font-heading font-bold text-sm hover:border-primary hover:text-primary transition-colors"
+        >
+          {c.name}
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

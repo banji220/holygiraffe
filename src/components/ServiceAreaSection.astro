@@ -1,0 +1,45 @@
+---
+// Service area: Google Maps embed showing OC coverage + 35-city link grid.
+// (Interactive SVG OrangeCountyMap port still pending; for now the Google
+// Maps embed is a stronger SEO/UX signal than the placeholder.)
+
+import cities from '../data/cityData';
+import GoogleMapEmbed from './GoogleMapEmbed.astro';
+const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<section id="service-area" class="py-12 sm:py-16 md:py-20 relative overflow-hidden" aria-label="Service area">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-12">
+      <div class="neo-badge bg-primary text-primary-foreground mb-4 mx-auto">📍 Coverage</div>
+      <h2 class="text-4xl md:text-6xl font-heading font-bold">
+        Serving All of <span class="text-primary">Orange County</span>
+      </h2>
+      <p class="text-muted-foreground text-lg mt-4 max-w-xl mx-auto">
+        From the coast to the canyons. Tap your city for local pricing and notes.
+      </p>
+    </div>
+
+    {/* Map embed — pins the actual business listing on Google so users see
+         our location, name, rating, and reviews. Lazy-loaded for LCP. */}
+    <div class="max-w-5xl mx-auto mb-12">
+      <GoogleMapEmbed
+        query="Giraffe Window Cleaning, Orange County, CA"
+        zoom={10}
+        height={420}
+        title="Giraffe Window Cleaning on Google Maps — Orange County, CA service area"
+      />
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-6xl mx-auto">
+      {sortedCities.map((city) => (
+        <a
+          href={`/window-cleaning-${city.slug}`}
+          class="neo-card p-3 border-[2px] border-foreground text-center font-heading font-bold text-sm hover:border-primary hover:text-primary transition-colors"
+        >
+          {city.name}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,151 @@
+---
+// Sticky top navigation. Faithful port of Lovable's Navbar.tsx —
+// dropdowns use native <details>/<summary> instead of Framer Motion,
+// which means zero JavaScript and the same visual behavior.
+
+import cities from '../data/cityData';
+import { NAP, SITE } from '../consts';
+
+const serviceLinks = [
+  { label: 'Residential Window Cleaning', href: '/residential-window-cleaning' },
+  { label: 'Commercial Window Cleaning',  href: '/commercial-window-cleaning' },
+  { label: 'Screen Cleaning & Repair',    href: '/screen-cleaning-repair' },
+  { label: 'Hard Water Stain Removal',    href: '/hard-water-stain-removal' },
+  { label: 'Solar Panel Cleaning',        href: '/solar-panel-cleaning' },
+  { label: 'Gutter Cleaning',             href: '/gutter-cleaning' },
+  { label: 'Pressure Washing',            href: '/pressure-washing' },
+];
+
+const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<nav
+  class="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b-[3px] border-foreground"
+  aria-label="Main navigation"
+>
+  <div class="container mx-auto flex items-center justify-between py-4 px-6">
+    {/* Brand */}
+    <a href="/" class="font-heading font-bold text-2xl flex items-center gap-2" aria-label={`${SITE.name} home`}>
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg border-[3px] border-foreground bg-foreground text-primary font-black">G</span>
+      <span>Giraffe</span><span class="text-primary">Cleaning</span>
+    </a>
+
+    {/* Desktop nav */}
+    <div class="hidden lg:flex items-center gap-6">
+      {/* Services dropdown */}
+      <details class="nav-dropdown relative group">
+        <summary class="font-heading font-semibold text-sm text-foreground hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1">
+          Services
+          <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div
+          class="absolute top-full left-0 mt-2 w-64 bg-background border-[3px] border-foreground rounded-lg py-2 z-50"
+          style="box-shadow: var(--shadow-brutal);"
+        >
+          {serviceLinks.map((link) => (
+            <a
+              href={link.href}
+              class="block px-4 py-2 text-sm font-heading font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </details>
+
+      {/* Locations dropdown */}
+      <details class="nav-dropdown relative group">
+        <summary class="font-heading font-semibold text-sm text-foreground hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1">
+          Locations
+          <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div
+          class="absolute top-full left-0 mt-2 w-64 bg-background border-[3px] border-foreground rounded-lg py-2 z-50 max-h-80 overflow-y-auto"
+          style="box-shadow: var(--shadow-brutal);"
+        >
+          {sortedCities.map((city) => (
+            <a
+              href={`/window-cleaning-${city.slug}`}
+              class="flex items-center gap-2 px-4 py-2 text-sm font-heading font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+            >
+              <svg class="w-3 h-3 text-muted-foreground shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              {city.name}
+            </a>
+          ))}
+        </div>
+      </details>
+
+      <a href="/about" class="font-heading font-semibold text-sm text-foreground hover:text-primary transition-colors whitespace-nowrap">About</a>
+      <a href="/faq"   class="font-heading font-semibold text-sm text-foreground hover:text-primary transition-colors whitespace-nowrap">FAQ</a>
+    </div>
+
+    {/* Desktop CTAs */}
+    <div class="hidden lg:flex items-center gap-3">
+      <a
+        href={NAP.phoneLink}
+        aria-label={`Call ${SITE.name} at ${NAP.phoneDisplay}`}
+        class="neo-btn bg-accent text-accent-foreground text-sm py-2 px-4 flex items-center gap-2 whitespace-nowrap"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call Us
+      </a>
+      <a href="/get-a-quote" class="neo-btn-primary text-sm py-2 px-4 whitespace-nowrap">Get a Quote</a>
+    </div>
+
+    {/* Mobile menu trigger */}
+    <details class="lg:hidden">
+      <summary class="p-2 list-none cursor-pointer" aria-label="Toggle navigation menu">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/>
+        </svg>
+      </summary>
+      <div
+        class="absolute top-full left-0 right-0 bg-background border-y-[3px] border-foreground"
+        style="box-shadow: var(--shadow-brutal);"
+      >
+        <div class="flex flex-col items-center gap-4 py-6 px-6">
+          {/* Mobile Services accordion */}
+          <details class="w-full text-center">
+            <summary class="font-heading font-semibold text-lg list-none cursor-pointer flex items-center justify-center gap-1">
+              Services
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="flex flex-col items-center gap-2 mt-3">
+              {serviceLinks.map((link) => (
+                <a href={link.href} class="font-heading font-medium text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</a>
+              ))}
+            </div>
+          </details>
+
+          {/* Mobile Locations accordion */}
+          <details class="w-full text-center">
+            <summary class="font-heading font-semibold text-lg list-none cursor-pointer flex items-center justify-center gap-1">
+              Locations
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="flex flex-col items-center gap-2 mt-3 max-h-60 overflow-y-auto">
+              {sortedCities.map((city) => (
+                <a href={`/window-cleaning-${city.slug}`} class="font-heading font-medium text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {city.name}
+                </a>
+              ))}
+            </div>
+          </details>
+
+          <a href="/about" class="font-heading font-semibold text-lg">About</a>
+          <a href="/faq"   class="font-heading font-semibold text-lg">FAQ</a>
+
+          <a
+            href={NAP.phoneLink}
+            aria-label={`Call ${SITE.name} at ${NAP.phoneDisplay}`}
+            class="neo-btn bg-accent text-accent-foreground text-base py-2 px-5 flex items-center gap-2"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            {NAP.phoneDisplay}
+          </a>
+          <a href="/get-a-quote" class="neo-btn-primary text-base py-2 px-5">Get a Quote</a>
+        </div>
+      </div>
+    </details>
+  </div>
+</nav>

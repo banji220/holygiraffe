@@ -1,0 +1,22 @@
+---
+// Sliding marquee banner — pure CSS, no JS. Verbatim port from Lovable.
+const items = ['100% Satisfaction or Your Money Back'];
+---
+
+<div class="border-y-[9px] border-accent-foreground py-5 overflow-hidden bg-[#f48c25] border-solid">
+  <div class="flex animate-marquee whitespace-nowrap">
+    {[...items, ...items].map((item) => (
+      <span class="mx-6 text-xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-black uppercase tracking-wide text-accent-foreground flex items-center gap-2 sm:gap-3">
+        {item}
+        {/* Inline SVG sparkle (replaces Lucide Sparkles to avoid React on this component) */}
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
+          <path d="M5 3v4" />
+          <path d="M19 17v4" />
+          <path d="M3 5h4" />
+          <path d="M17 19h4" />
+        </svg>
+      </span>
+    ))}
+  </div>
+</div>

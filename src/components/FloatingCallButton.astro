@@ -1,0 +1,24 @@
+---
+import { NAP } from '../consts';
+---
+
+{/* Pulled inside safe-area-inset-bottom so it doesn't overlap the iOS
+    home indicator on newer iPhones. Smaller on mobile (icon-only) so it
+    doesn't crowd content; expands to show phone number on tablet+. */}
+<a
+  href={NAP.phoneLink}
+  aria-label={`Call Giraffe Cleaning at ${NAP.phoneDisplay}`}
+  class="fixed z-50 flex items-center gap-2 bg-accent text-accent-foreground font-heading font-bold rounded-2xl border-[3px] border-foreground transition-all duration-150 hover:translate-x-[3px] hover:translate-y-[3px] active:translate-x-[5px] active:translate-y-[5px] py-3 px-4 sm:py-4 sm:px-6 text-base sm:text-lg"
+  style="
+    box-shadow: var(--shadow-brutal);
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    right: max(1rem, env(safe-area-inset-right));
+  "
+>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse" aria-hidden="true">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+  </svg>
+  <span class="hidden sm:inline">{NAP.phoneDisplay}</span>
+  {/* Mobile: short text so the button is compact but still clearly a phone CTA */}
+  <span class="sm:hidden">Call</span>
+</a>
