@@ -1,5 +1,20 @@
 # holygiraffe.com
 
+> **SEO score: 32 → 82** (May 7, 2026 audit). This round of fixes targets the
+> 18 points still on the table. Headline wins after this round:
+>
+> - Title-truncation `…` bug killed (was hiding "Orange County, CA" from the homepage source)
+> - FAQ page now has a proper H1
+> - Service-page H1 spacing fixed (`Cleaningin` → `Cleaning in`)
+> - OfferCatalog dedupe (Screen Cleaning was listed twice in homepage schema)
+> - `security.txt` added at `/.well-known/security.txt`
+> - Cache-Control rules now cover images, scripts, and well-known files
+> - Dedicated `/reviews` page rendering all real GBP reviews
+> - robots.txt clarified — but you must disable Cloudflare's "Block AI Scrapers and Crawlers"
+>   feature in the dashboard (see deploy notes below)
+
+
+
 Static marketing site for **Giraffe Window Cleaning** (Orange County, CA), built with [Astro](https://astro.build) + Tailwind. Faithful port of the existing Lovable.app design — same neo-brutalist visual identity (chunky borders, hard offset shadows, coral/mint/yellow accents, Space Grotesk + DM Sans) — but server-rendered as static HTML at build time. Zero JavaScript shipped except the QuoteForm island.
 
 Deploys to Cloudflare Pages.

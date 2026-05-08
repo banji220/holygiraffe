@@ -18,13 +18,28 @@ const schemas = [
 ---
 
 <BaseLayout title={title} description={description} path={path} schemas={schemas}>
-  <div class="container mx-auto px-6 pt-24 pb-4">
+  <div class="container mx-auto px-4 sm:px-6 pt-24 pb-4">
     <nav aria-label="Breadcrumb" class="flex items-center gap-1 text-sm text-muted-foreground">
       <a href="/" class="hover:text-foreground transition-colors">Home</a>
       <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
       <span class="text-foreground font-medium">FAQ</span>
     </nav>
   </div>
+
+  {/* Page H1 — sits above the shared FaqSection (which only emits H2/H3).
+      Without this the page had zero H1, hurting semantic structure. */}
+  <section class="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="max-w-3xl">
+      <h1 class="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-5 sm:mb-6 leading-tight">
+        Window Cleaning <span class="text-primary">FAQ</span> — Orange County, CA
+      </h1>
+      <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
+        Real answers to the questions Orange County homeowners and businesses
+        ask about window cleaning, pricing, scheduling, and our eco-friendly
+        process.
+      </p>
+    </div>
+  </section>
 
   <FaqSection />
   <CtaSection />

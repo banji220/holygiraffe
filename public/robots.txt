@@ -1,6 +1,15 @@
 # Giraffe Window Cleaning — robots.txt
-# All crawlers welcome. Search, AI training, and social-unfurl bots
-# explicitly allowed below to remove ambiguity.
+#
+# This file is the AUTHORITATIVE crawler policy. If you've previously enabled
+# Cloudflare's "Block AI Scrapers and Crawlers" or "Pause AI Training" feature,
+# DISABLE IT in the Cloudflare dashboard:
+#   Cloudflare → Security → Settings → AI Scrapers and Crawlers → OFF
+#   (or under: Security → Bots → AI Crawlers)
+# Otherwise Cloudflare will inject conflicting directives that override this file.
+#
+# Site policy: allow everyone, including AI/LLM crawlers, because we *want*
+# to be indexed and cited. Citation correlation in AI Overviews / ChatGPT /
+# Perplexity / Claude is strongest when these agents are explicitly welcomed.
 
 User-agent: *
 Allow: /
@@ -28,9 +37,6 @@ User-agent: Applebot
 Allow: /
 
 # ── Generative AI / LLM crawlers ─────────────────────────────────────────
-# Citation correlation in AI Overviews / ChatGPT / Perplexity is strongest
-# when a site is explicitly accessible to these agents.
-
 User-agent: GPTBot
 Allow: /
 

@@ -54,6 +54,9 @@ export default defineConfig({
         } else if (u === '/about' || u === '/faq') {
           item.priority = 0.5;
           item.changefreq = 'yearly';
+        } else if (u === '/reviews') {
+          item.priority = 0.6;
+          item.changefreq = 'monthly';
         }
         return item;
       },

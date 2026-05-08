@@ -1,0 +1,91 @@
+---
+// Dedicated reviews page — captures "[business] reviews" search intent and
+// gives Google a deep-link target with all real review text rendered server-side.
+// Reviews live in src/data/reviews.ts (single source of truth).
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaSection from '../components/CtaSection.astro';
+import { REVIEWS } from '../data/reviews';
+import { SOCIAL, REVIEWS as REVIEW_STATS } from '../consts';
+import { breadcrumbSchema, webPageSchema } from '../lib/schema';
+
+const title = 'Customer Reviews — Giraffe Window Cleaning Orange County';
+const description =
+  'Real Google reviews from Orange County customers. 5.0 stars. See what homeowners and businesses say about Giraffe Window Cleaning.';
+const path = '/reviews';
+
+const schemas = [
+  webPageSchema({ title, description, path }),
+  breadcrumbSchema([{ name: 'Reviews', path }]),
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schemas={schemas}>
+  <div class="container mx-auto px-4 sm:px-6 pt-24 pb-4">
+    <nav aria-label="Breadcrumb" class="flex items-center gap-1 text-sm text-muted-foreground">
+      <a href="/" class="hover:text-foreground transition-colors">Home</a>
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-foreground font-medium">Reviews</span>
+    </nav>
+  </div>
+
+  <section class="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="max-w-3xl">
+      <div class="neo-badge bg-mint text-mint-foreground mb-5">
+        ⭐ {REVIEW_STATS.ratingValue} on Google
+      </div>
+      <h1 class="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-5 sm:mb-6 leading-tight">
+        Customer <span class="text-primary">Reviews</span>
+      </h1>
+      <p class="text-base sm:text-lg text-muted-foreground leading-relaxed mb-7 sm:mb-8">
+        Real reviews from real Orange County homeowners and businesses on our
+        Google Business Profile. Every entry below is unedited and pulled
+        directly from Google.
+      </p>
+      <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
+        <a
+          href={SOCIAL.gbpUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="neo-btn neo-btn-primary inline-flex items-center gap-2 justify-center w-full sm:w-auto"
+        >
+          See Google Reviews
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="/get-a-quote" class="neo-btn neo-btn-secondary inline-flex items-center gap-2 justify-center w-full sm:w-auto">
+          Get a Free Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="grid md:grid-cols-2 gap-6 max-w-5xl">
+      {REVIEWS.map((review) => (
+        <article class="neo-card p-6 flex flex-col">
+          <div class="flex items-center gap-1 mb-3 text-yellow-500" aria-label={`${review.rating} out of 5 stars`}>
+            {Array.from({ length: review.rating }).map(() => (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            ))}
+          </div>
+          <blockquote class="text-foreground/85 leading-relaxed text-[0.95rem] flex-1 whitespace-pre-line">
+            "{review.body}"
+          </blockquote>
+          <footer class="border-t-2 border-foreground/10 pt-3 mt-4">
+            <p class="font-heading font-bold text-base">{review.name}</p>
+            <p class="text-xs text-muted-foreground mt-0.5">
+              {review.timeAgo}
+              {review.location && <> · {review.location}</>}
+            </p>
+          </footer>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <CtaSection />
+</BaseLayout>

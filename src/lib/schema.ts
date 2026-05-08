@@ -89,10 +89,17 @@ function openingHoursSpec(): unknown[] {
 }
 
 function offerCatalog(): unknown {
+  // Defensive dedupe — serviceData.ts has historically contained duplicate
+  // entries by slug (audit caught "Screen Cleaning & Repair" listed twice).
+  // Last-write-wins matches the Map behaviour used elsewhere.
+  const bySlug = new Map<string, ServiceData>();
+  services.forEach((s) => bySlug.set(s.slug, s));
+  const unique = Array.from(bySlug.values());
+
   return {
     '@type': 'OfferCatalog',
     name: 'Cleaning Services',
-    itemListElement: services.map((s: ServiceData) => ({
+    itemListElement: unique.map((s) => ({
       '@type': 'Offer',
       itemOffered: {
         '@type': 'Service',

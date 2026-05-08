@@ -29,18 +29,34 @@ export function canonical(path: string): string {
   return `${SITE.url}${clean}`;
 }
 
+/**
+ * Soft validation only — DO NOT truncate values.
+ *
+ * The previous version sliced any over-limit title/description and appended
+ * a literal "…" character. That caused the audit-flagged bug: the homepage
+ * title literally read "Giraffe Window Cleaning — Professional Window Cleaning in…"
+ * in the rendered HTML, killing keyword value (lost "Orange County, CA").
+ *
+ * Authors are responsible for keeping titles ≤60 chars and descriptions ≤160
+ * chars. We pass through what was set so crawlers see the full text.
+ */
 export function resolveSeo(props: SeoProps): ResolvedSeo {
-  // Hard-truncate over-length values so we never ship a 90-char title.
-  const title =
-    props.title.length > 60 ? props.title.slice(0, 57) + '…' : props.title;
-  const description =
-    props.description.length > 160
-      ? props.description.slice(0, 157) + '…'
-      : props.description;
+  if (import.meta.env.DEV) {
+    if (props.title.length > 65) {
+      console.warn(
+        `[seo] Title is ${props.title.length} chars (recommended ≤60): "${props.title}"`,
+      );
+    }
+    if (props.description.length > 165) {
+      console.warn(
+        `[seo] Description is ${props.description.length} chars (recommended ≤160): "${props.description}"`,
+      );
+    }
+  }
 
   return {
-    title,
-    description,
+    title: props.title,
+    description: props.description,
     canonical: canonical(props.path),
     ogImage: props.ogImage ?? `${SITE.url}${SITE.ogImage}`,
     ogType: props.ogType ?? 'website',

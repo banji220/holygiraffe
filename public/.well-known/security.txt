@@ -1,0 +1,8 @@
+# RFC 9116 — security disclosure policy.
+# Tells security researchers how to report vulnerabilities responsibly.
+# Trust signal for security-aware crawlers + a basic web hygiene win.
+
+Contact: mailto:moly@holygiraffe.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://holygiraffe.com/.well-known/security.txt
