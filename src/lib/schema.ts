@@ -111,7 +111,13 @@ function offerCatalog(): unknown {
 }
 
 /** Per-review JSON-LD entries — gives Google + AI search the actual
- *  review text, not just an aggregate count. */
+ *  review text, not just an aggregate count.
+ *
+ *  IMPORTANT: do NOT add `itemReviewed` here. These objects are nested
+ *  inside CleaningService.review[], so the parent already implies what's
+ *  being reviewed. Adding `itemReviewed` triggers Google Search Console's
+ *  "Invalid object type for field <parent_node>" error and disqualifies
+ *  the page from review-snippet rich results. */
 function reviewItems(): unknown[] {
   return REAL_REVIEWS.map((r) => ({
     '@type': 'Review',
@@ -122,7 +128,6 @@ function reviewItems(): unknown[] {
       bestRating: 5,
     },
     reviewBody: r.body.replace(/\n+/g, ' ').trim(),
-    itemReviewed: { '@id': BUSINESS_ID },
   }));
 }
 
