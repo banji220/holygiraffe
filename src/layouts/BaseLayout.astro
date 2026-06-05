@@ -78,11 +78,16 @@ const validSchemas = [...baseSchemas, ...schemas].filter(
     <meta name="twitter:description" content={seo.description} />
     <meta name="twitter:image" content={seo.ogImage} />
 
-    {/* Favicon — uses the real logo PNG. Modern browsers downscale cleanly.
-        For pixel-perfect 16/32/180 sizes, generate them at favicon.io and
-        drop favicon-16x16.png / favicon-32x32.png / apple-touch-icon.png. */}
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    {/* Favicon set — square versions of the logo at every size Google,
+        Apple, Android, and the browser tab actually use. Generate via
+        favicon.io (one drag-and-drop of /logo.png) and unzip into /public.
+        Files referenced below. The .ico is what Google Search uses for
+        the favicon in SERPs — without it you get the blank circle. */}
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#f48c25" />
 
     {/* Font preconnects — Google Fonts CSS request needs to start in parallel

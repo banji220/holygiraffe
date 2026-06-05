@@ -1,37 +1,132 @@
 ---
-// PLACEHOLDER — full port of the Lovable GallerySection (3-marquee
-// before/after image strip) is on the next-session backlog. For now
-// we render plain placeholder cards so the section appears in the page
-// flow without firing 404s for missing images.
+// Before/after job showcase — one card per job, with proper room for the
+// photos to land. Replaces the cramped 8-square grid that hid detail.
 //
-// To swap in real photos: drop files at /public/images/gallery/{1..8}.{webp,jpg}
-// and replace the placeholder boxes below with <img> tags.
+// LAYOUT:
+//   - Mobile (<640px): photos stack vertically inside each card → each photo is full-width
+//   - Tablet+ (≥640px): photos sit side-by-side inside each card
+//   - One card per row everywhere — keeps each pair big enough to actually see
+//
+// PHOTOS:
+//   Drop real files at the paths below in /public/images/gallery/.
+//   Recommended: 1200×900 (4:3) JPG or WebP, compressed to ~150–300 KB each.
+//   If a file is missing, the "Photo coming" CSS box renders in its place.
 
-const placeholders = Array.from({ length: 8 }, (_, i) => i + 1);
+const jobs = [
+  {
+    id: 1,
+    location: 'Newport Beach, CA',
+    service: 'Hard water stain restoration',
+    note: 'Sprinkler etch on a Corona del Mar two-story — fully removed in one visit.',
+    before: '/images/gallery/job-1-before.jpg',
+    after:  '/images/gallery/job-1-after.jpg',
+  },
+  {
+    id: 2,
+    location: 'Irvine, CA',
+    service: 'Residential interior + exterior',
+    note: 'Quail Hill home with floor-to-ceiling glass. Streak-free, including the second-story transoms.',
+    before: '/images/gallery/job-2-before.jpg',
+    after:  '/images/gallery/job-2-after.jpg',
+  },
+  {
+    id: 3,
+    location: 'Laguna Beach, CA',
+    service: 'Coastal salt-air cleaning',
+    note: 'Oceanfront cottage with weeks of marine layer haze. Back to crystal in 90 minutes.',
+    before: '/images/gallery/job-3-before.jpg',
+    after:  '/images/gallery/job-3-after.jpg',
+  },
+];
 ---
 
-<section class="py-12 sm:py-16 md:py-20 bg-mint/30 relative overflow-hidden" aria-label="Recent work gallery">
+<section class="py-12 sm:py-16 md:py-20 bg-mint/30 relative overflow-hidden" aria-label="Before and after gallery">
   <div class="container mx-auto px-4 sm:px-6">
-    <div class="text-center mb-12 sm:mb-14">
+    <div class="text-center mb-10 sm:mb-14 max-w-2xl mx-auto">
       <div class="neo-badge bg-coral text-coral-foreground mb-4 mx-auto">📸 Recent Work</div>
       <h2 class="text-4xl md:text-6xl font-heading font-bold">
         Before &amp; After Across <span class="text-primary">Orange County</span>
       </h2>
-      <p class="text-muted-foreground text-lg mt-4 max-w-xl mx-auto">
-        Homes, storefronts, hard-water restorations — a sampling of recent jobs.
+      <p class="text-muted-foreground text-lg mt-4">
+        Real jobs, real glass. Hard water restoration, salt-air cleanups,
+        two-story estates — see the difference our crew makes.
       </p>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
-      {placeholders.map((n) => (
-        <div
-          class="aspect-square neo-card bg-muted/40 flex items-center justify-center"
-          aria-label={`Gallery placeholder ${n}`}
-        >
-          <span class="text-muted-foreground text-xs font-heading font-semibold uppercase tracking-wider">
-            Photo coming
-          </span>
-        </div>
+
+    <div class="space-y-8 sm:space-y-10 max-w-5xl mx-auto">
+      {jobs.map((job) => (
+        <article class="neo-card p-4 sm:p-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            {/* BEFORE */}
+            <figure class="relative aspect-[4/3] rounded-xl overflow-hidden border-[3px] border-foreground bg-muted/40">
+              <img
+                src={job.before}
+                alt={`Before window cleaning in ${job.location} — ${job.service}`}
+                loading="lazy"
+                decoding="async"
+                width="1200"
+                height="900"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+              />
+              <div
+                class="hidden w-full h-full items-center justify-center text-muted-foreground text-xs sm:text-sm font-heading font-semibold uppercase tracking-wider"
+                aria-hidden="true"
+              >
+                Photo coming
+              </div>
+              <figcaption
+                class="absolute top-3 left-3 inline-flex items-center px-3 py-1 rounded-full border-[2px] border-foreground bg-card text-foreground text-xs font-heading font-bold uppercase tracking-wider"
+                style="box-shadow: var(--shadow-brutal-sm);"
+              >
+                Before
+              </figcaption>
+            </figure>
+
+            {/* AFTER */}
+            <figure class="relative aspect-[4/3] rounded-xl overflow-hidden border-[3px] border-foreground bg-muted/40">
+              <img
+                src={job.after}
+                alt={`After window cleaning in ${job.location} — ${job.service}`}
+                loading="lazy"
+                decoding="async"
+                width="1200"
+                height="900"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+              />
+              <div
+                class="hidden w-full h-full items-center justify-center text-muted-foreground text-xs sm:text-sm font-heading font-semibold uppercase tracking-wider"
+                aria-hidden="true"
+              >
+                Photo coming
+              </div>
+              <figcaption
+                class="absolute top-3 left-3 inline-flex items-center px-3 py-1 rounded-full border-[2px] border-foreground bg-primary text-primary-foreground text-xs font-heading font-bold uppercase tracking-wider"
+                style="box-shadow: var(--shadow-brutal-sm);"
+              >
+                After
+              </figcaption>
+            </figure>
+          </div>
+
+          {/* Caption */}
+          <div class="mt-4 sm:mt-5">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 class="font-heading font-bold text-lg sm:text-xl">{job.location}</h3>
+              <p class="text-sm sm:text-base text-primary font-heading font-semibold">{job.service}</p>
+            </div>
+            <p class="text-sm sm:text-base text-muted-foreground mt-1.5 leading-relaxed">
+              {job.note}
+            </p>
+          </div>
+        </article>
       ))}
     </div>
+
+    <p class="text-center text-sm text-muted-foreground mt-8 sm:mt-10">
+      Want to see your home or business on this list?
+      <a href="/get-a-quote" class="text-primary font-heading font-bold underline hover:text-primary/80 transition-colors">Get a free quote →</a>
+    </p>
   </div>
 </section>
