@@ -1,132 +1,121 @@
 ---
-// Before/after job showcase — one card per job, with proper room for the
-// photos to land. Replaces the cramped 8-square grid that hid detail.
+// Marquee gallery — two infinite-scroll rows of photos.
+//  Top row scrolls left, bottom row scrolls right.
+//  Photos pause on hover (CSS animation-play-state).
+//  No before/after pairing needed — drop ANY photos (work shots, vans,
+//  team, results) at the paths below and they appear in rotation.
 //
-// LAYOUT:
-//   - Mobile (<640px): photos stack vertically inside each card → each photo is full-width
-//   - Tablet+ (≥640px): photos sit side-by-side inside each card
-//   - One card per row everywhere — keeps each pair big enough to actually see
+// PHOTO PATHS (drop files at /public/images/gallery/):
+//   photo-1.jpg through photo-12.jpg
+//   Recommended: landscape JPG/WebP, ~600×400, ≤150 KB each.
 //
-// PHOTOS:
-//   Drop real files at the paths below in /public/images/gallery/.
-//   Recommended: 1200×900 (4:3) JPG or WebP, compressed to ~150–300 KB each.
-//   If a file is missing, the "Photo coming" CSS box renders in its place.
+// If a file is missing, the tile renders as a "Photo coming" placeholder
+// so the marquee still flows visually while you populate it.
 
-const jobs = [
-  {
-    id: 1,
-    location: 'Newport Beach, CA',
-    service: 'Hard water stain restoration',
-    note: 'Sprinkler etch on a Corona del Mar two-story — fully removed in one visit.',
-    before: '/images/gallery/job-1-before.jpg',
-    after:  '/images/gallery/job-1-after.jpg',
-  },
-  {
-    id: 2,
-    location: 'Irvine, CA',
-    service: 'Residential interior + exterior',
-    note: 'Quail Hill home with floor-to-ceiling glass. Streak-free, including the second-story transoms.',
-    before: '/images/gallery/job-2-before.jpg',
-    after:  '/images/gallery/job-2-after.jpg',
-  },
-  {
-    id: 3,
-    location: 'Laguna Beach, CA',
-    service: 'Coastal salt-air cleaning',
-    note: 'Oceanfront cottage with weeks of marine layer haze. Back to crystal in 90 minutes.',
-    before: '/images/gallery/job-3-before.jpg',
-    after:  '/images/gallery/job-3-after.jpg',
-  },
+const rowTop = [
+  '/images/gallery/photo-1.jpg',
+  '/images/gallery/photo-2.jpg',
+  '/images/gallery/photo-3.jpg',
+  '/images/gallery/photo-4.jpg',
+  '/images/gallery/photo-5.jpg',
+  '/images/gallery/photo-6.jpg',
 ];
+
+const rowBottom = [
+  '/images/gallery/photo-7.jpg',
+  '/images/gallery/photo-8.jpg',
+  '/images/gallery/photo-9.jpg',
+  '/images/gallery/photo-10.jpg',
+  '/images/gallery/photo-11.jpg',
+  '/images/gallery/photo-12.jpg',
+];
+
+// Duplicate each row so the marquee can loop seamlessly (translateX -50%
+// of the doubled set returns to the visual start position).
 ---
 
-<section class="py-12 sm:py-16 md:py-20 bg-mint/30 relative overflow-hidden" aria-label="Before and after gallery">
+<section class="py-12 sm:py-16 md:py-20 bg-mint/30 relative overflow-hidden" aria-label="Recent work gallery">
   <div class="container mx-auto px-4 sm:px-6">
     <div class="text-center mb-10 sm:mb-14 max-w-2xl mx-auto">
       <div class="neo-badge bg-coral text-coral-foreground mb-4 mx-auto">📸 Recent Work</div>
       <h2 class="text-4xl md:text-6xl font-heading font-bold">
-        Before &amp; After Across <span class="text-primary">Orange County</span>
+        From Our Crews Across <span class="text-primary">Orange County</span>
       </h2>
       <p class="text-muted-foreground text-lg mt-4">
-        Real jobs, real glass. Hard water restoration, salt-air cleanups,
-        two-story estates — see the difference our crew makes.
+        Hover to pause. Real jobs, real homes, real glass. From beach
+        cottages to canyon estates.
       </p>
     </div>
+  </div>
 
-    <div class="space-y-8 sm:space-y-10 max-w-5xl mx-auto">
-      {jobs.map((job) => (
-        <article class="neo-card p-4 sm:p-6">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            {/* BEFORE */}
-            <figure class="relative aspect-[4/3] rounded-xl overflow-hidden border-[3px] border-foreground bg-muted/40">
-              <img
-                src={job.before}
-                alt={`Before window cleaning in ${job.location} — ${job.service}`}
-                loading="lazy"
-                decoding="async"
-                width="1200"
-                height="900"
-                class="w-full h-full object-cover"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-              />
-              <div
-                class="hidden w-full h-full items-center justify-center text-muted-foreground text-xs sm:text-sm font-heading font-semibold uppercase tracking-wider"
-                aria-hidden="true"
-              >
-                Photo coming
-              </div>
-              <figcaption
-                class="absolute top-3 left-3 inline-flex items-center px-3 py-1 rounded-full border-[2px] border-foreground bg-card text-foreground text-xs font-heading font-bold uppercase tracking-wider"
-                style="box-shadow: var(--shadow-brutal-sm);"
-              >
-                Before
-              </figcaption>
-            </figure>
-
-            {/* AFTER */}
-            <figure class="relative aspect-[4/3] rounded-xl overflow-hidden border-[3px] border-foreground bg-muted/40">
-              <img
-                src={job.after}
-                alt={`After window cleaning in ${job.location} — ${job.service}`}
-                loading="lazy"
-                decoding="async"
-                width="1200"
-                height="900"
-                class="w-full h-full object-cover"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-              />
-              <div
-                class="hidden w-full h-full items-center justify-center text-muted-foreground text-xs sm:text-sm font-heading font-semibold uppercase tracking-wider"
-                aria-hidden="true"
-              >
-                Photo coming
-              </div>
-              <figcaption
-                class="absolute top-3 left-3 inline-flex items-center px-3 py-1 rounded-full border-[2px] border-foreground bg-primary text-primary-foreground text-xs font-heading font-bold uppercase tracking-wider"
-                style="box-shadow: var(--shadow-brutal-sm);"
-              >
-                After
-              </figcaption>
-            </figure>
+  {/* Top row — scrolls LEFT (default marquee direction).
+      overflow-hidden on the parent clips off-screen photos.
+      flex-shrink-0 on each tile keeps them from squishing. */}
+  <div class="overflow-hidden mb-4 sm:mb-6 marquee-row">
+    <div class="flex gap-4 sm:gap-6 animate-marquee-gallery w-max">
+      {[...rowTop, ...rowTop].map((src, i) => (
+        <figure class="shrink-0 w-[200px] sm:w-[260px] md:w-[300px] aspect-[4/3] neo-card overflow-hidden bg-muted/40 relative">
+          <img
+            src={src}
+            alt="Giraffe Window Cleaning recent work in Orange County, CA"
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div
+            class="hidden w-full h-full items-center justify-center text-muted-foreground text-xs font-heading font-semibold uppercase tracking-wider"
+            aria-hidden="true"
+          >
+            Photo coming
           </div>
-
-          {/* Caption */}
-          <div class="mt-4 sm:mt-5">
-            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 class="font-heading font-bold text-lg sm:text-xl">{job.location}</h3>
-              <p class="text-sm sm:text-base text-primary font-heading font-semibold">{job.service}</p>
-            </div>
-            <p class="text-sm sm:text-base text-muted-foreground mt-1.5 leading-relaxed">
-              {job.note}
-            </p>
-          </div>
-        </article>
+        </figure>
       ))}
     </div>
+  </div>
 
-    <p class="text-center text-sm text-muted-foreground mt-8 sm:mt-10">
-      Want to see your home or business on this list?
-      <a href="/get-a-quote" class="text-primary font-heading font-bold underline hover:text-primary/80 transition-colors">Get a free quote →</a>
+  {/* Bottom row — scrolls RIGHT (reverse marquee), slightly slower. */}
+  <div class="overflow-hidden marquee-row">
+    <div class="flex gap-4 sm:gap-6 animate-marquee-gallery-reverse w-max">
+      {[...rowBottom, ...rowBottom].map((src, i) => (
+        <figure class="shrink-0 w-[200px] sm:w-[260px] md:w-[300px] aspect-[4/3] neo-card overflow-hidden bg-muted/40 relative">
+          <img
+            src={src}
+            alt="Giraffe Window Cleaning recent work in Orange County, CA"
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div
+            class="hidden w-full h-full items-center justify-center text-muted-foreground text-xs font-heading font-semibold uppercase tracking-wider"
+            aria-hidden="true"
+          >
+            Photo coming
+          </div>
+        </figure>
+      ))}
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 sm:px-6 mt-8 sm:mt-10 text-center">
+    <p class="text-sm text-muted-foreground">
+      Want your home featured here?
+      <a href="/get-a-quote" class="text-primary font-heading font-bold underline hover:text-primary/80 transition-colors">Book a clean →</a>
     </p>
   </div>
 </section>
+
+{/* Hover-pause for the marquee. Pure CSS — no JS. */}
+<style>
+  .marquee-row:hover > div {
+    animation-play-state: paused;
+  }
+  /* Respect users who've set Reduce Motion in their OS — don't animate. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-row > div {
+      animation: none;
+      transform: translateX(0);
+    }
+  }
+</style>
