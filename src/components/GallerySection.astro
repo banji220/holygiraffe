@@ -34,7 +34,7 @@ const rowBottom = [
 // of the doubled set returns to the visual start position).
 ---
 
-<section class="py-12 sm:py-16 md:py-20 bg-mint/30 relative overflow-hidden" aria-label="Recent work gallery">
+<section class="py-12 sm:py-16 md:py-20 bg-card relative overflow-hidden" aria-label="Recent work gallery">
   <div class="container mx-auto px-4 sm:px-6">
     <div class="text-center mb-10 sm:mb-14 max-w-2xl mx-auto">
       <div class="neo-badge bg-coral text-coral-foreground mb-4 mx-auto">📸 Recent Work</div>
@@ -54,7 +54,7 @@ const rowBottom = [
   <div class="overflow-hidden mb-4 sm:mb-6 marquee-row">
     <div class="flex gap-4 sm:gap-6 animate-marquee-gallery w-max">
       {[...rowTop, ...rowTop].map((src, i) => (
-        <figure class="shrink-0 w-[200px] sm:w-[260px] md:w-[300px] aspect-[4/3] neo-card overflow-hidden bg-muted/40 relative">
+        <figure class="shrink-0 w-[220px] sm:w-[280px] md:w-[320px] aspect-[4/3] rounded-2xl overflow-hidden bg-muted/30 relative shadow-sm transition-transform duration-300 hover:scale-[1.02]">
           <img
             src={src}
             alt="Giraffe Window Cleaning recent work in Orange County, CA"
@@ -78,7 +78,7 @@ const rowBottom = [
   <div class="overflow-hidden marquee-row">
     <div class="flex gap-4 sm:gap-6 animate-marquee-gallery-reverse w-max">
       {[...rowBottom, ...rowBottom].map((src, i) => (
-        <figure class="shrink-0 w-[200px] sm:w-[260px] md:w-[300px] aspect-[4/3] neo-card overflow-hidden bg-muted/40 relative">
+        <figure class="shrink-0 w-[220px] sm:w-[280px] md:w-[320px] aspect-[4/3] rounded-2xl overflow-hidden bg-muted/30 relative shadow-sm transition-transform duration-300 hover:scale-[1.02]">
           <img
             src={src}
             alt="Giraffe Window Cleaning recent work in Orange County, CA"
