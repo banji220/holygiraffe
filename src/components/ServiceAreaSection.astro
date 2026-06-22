@@ -20,13 +20,13 @@ const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name));
       </p>
     </div>
 
-    {/* Map embed — pins the actual business listing on Google so users see
-         our location, name, rating, and reviews. Lazy-loaded for LCP. */}
-    <div class="max-w-5xl mx-auto mb-12">
+    {/* Map embed — pins the actual business listing on Google. Wider
+         container + 16:10 aspect ratio so the whole county is visible. */}
+    <div class="max-w-6xl mx-auto mb-12">
       <GoogleMapEmbed
         query="Giraffe Window Cleaning, Orange County, CA"
         zoom={10}
-        height={420}
+        aspectRatio="16/10"
         title="Giraffe Window Cleaning on Google Maps — Orange County, CA service area"
       />
     </div>

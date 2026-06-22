@@ -12,22 +12,34 @@
 // If a file is missing, the tile renders as a "Photo coming" placeholder
 // so the marquee still flows visually while you populate it.
 
+// All 21 photos in /public/images/gallery/ — split across two marquee rows
+// so each row has enough photos to feel continuous and you don't see the
+// same photo cycle obviously within a single viewport width.
 const rowTop = [
   '/images/gallery/photo-1.jpg',
-  '/images/gallery/photo-2.jpg',
   '/images/gallery/photo-3.jpg',
-  '/images/gallery/photo-4.jpg',
   '/images/gallery/photo-5.jpg',
-  '/images/gallery/photo-6.jpg',
+  '/images/gallery/photo-7.jpg',
+  '/images/gallery/photo-9.jpg',
+  '/images/gallery/photo-11.jpg',
+  '/images/gallery/photo-13.jpg',
+  '/images/gallery/photo-15.jpg',
+  '/images/gallery/photo-17.jpg',
+  '/images/gallery/photo-19.jpg',
+  '/images/gallery/photo-21.jpg',
 ];
 
 const rowBottom = [
-  '/images/gallery/photo-7.jpg',
+  '/images/gallery/photo-2.jpg',
+  '/images/gallery/photo-4.jpg',
+  '/images/gallery/photo-6.jpg',
   '/images/gallery/photo-8.jpg',
-  '/images/gallery/photo-9.jpg',
   '/images/gallery/photo-10.jpg',
-  '/images/gallery/photo-11.jpg',
   '/images/gallery/photo-12.jpg',
+  '/images/gallery/photo-14.jpg',
+  '/images/gallery/photo-16.jpg',
+  '/images/gallery/photo-18.jpg',
+  '/images/gallery/photo-20.jpg',
 ];
 
 // Duplicate each row so the marquee can loop seamlessly (translateX -50%
